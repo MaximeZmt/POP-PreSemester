@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -17,35 +18,39 @@ var addr = flag.String("addr", (Domain + ":" + Port), "http service address")
 var upgrader = websocket.Upgrader{} // use default options
 
 func echo(w http.ResponseWriter, r *http.Request) {
+	// Upgrade our raw HTTP connection to a websocket based one
 	c, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Print("upgrade:", err)
 		return
 	}
 	defer c.Close()
+
+	// The event loop
 	for {
-		mt, message, err := c.ReadMessage()
+		mt, message, err := c.ReadMessage() //mt is message type
 		if err != nil {
-			log.Println("read:", err)
+			log.Println("Error while reading:", err)
 			break
 		}
-		log.Printf("recv: %s", message)
+		log.Printf("recieved: %s", message)
 		err = c.WriteMessage(mt, message)
 		if err != nil {
-			log.Println("write:", err)
+			log.Println("Error while writing:", err)
 			break
 		}
 	}
 }
 
 func home(w http.ResponseWriter, r *http.Request) {
-	homeTemplate.Execute(w, "ws://"+r.Host+"/echo")
+	fmt.Fprintf(w, "IndexPage")
+	//homeTemplate.Execute(w, "ws://"+r.Host+"/echo")
 }
 
 func main() {
-	flag.Parse()
+	//flag.Parse()
 	log.SetFlags(0)
-	http.HandleFunc("/echo", echo)
+	http.HandleFunc("/socket", echo)
 	http.HandleFunc("/", home)
 	log.Fatal(http.ListenAndServe(*addr, nil))
 }

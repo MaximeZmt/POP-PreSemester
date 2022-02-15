@@ -1,65 +1,79 @@
 package main
 
 import (
-	"flag"
 	"fmt"
-	"html/template"
+	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
-
-	"github.com/gorilla/websocket"
+	"strconv"
 )
 
 const Domain = "localhost"
 const Port = "8080"
 
-var addr = flag.String("addr", (Domain + ":" + Port), "http service address")
+//var addr = flag.String("addr", (Domain + ":" + Port), "http service address")
 
-var upgrader = websocket.Upgrader{} // use default options
+var upgrader = websocket.Upgrader{
+	ReadBufferSize:  1024,
+	WriteBufferSize: 1024,
+}
 
-func echo(w http.ResponseWriter, r *http.Request) {
-	// Upgrade our raw HTTP connection to a websocket based one
-	c, err := upgrader.Upgrade(w, r, nil)
-	if err != nil {
-		log.Print("upgrade:", err)
-		return
-	}
-	defer c.Close()
+func homePage(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello World Home Page !")
+}
 
-	// The event loop
+func reader(conn *websocket.Conn) {
+	var counter = 0
 	for {
-		mt, message, err := c.ReadMessage() //mt is message type
+		messageType, p, err := conn.ReadMessage()
+
 		if err != nil {
-			log.Println("Error while reading:", err)
-			break
+			log.Println(err)
+			return
 		}
-		log.Printf("recieved: %s", message)
-		err = c.WriteMessage(mt, message)
+
+		log.Println(string(p))
+
+		intVar, err := strconv.Atoi(string(p))
+		counter += intVar
+		log.Println(counter)
+
 		if err != nil {
-			log.Println("Error while writing:", err)
-			break
+			log.Println(err)
+			if err = conn.WriteMessage(messageType, []byte("Not A Number")); err != nil {
+				log.Println(err)
+				return
+			}
 		}
+
+		if err = conn.WriteMessage(messageType, []byte(string(counter))); err != nil {
+			log.Println(err)
+			return
+		}
+
 	}
 }
 
-func home(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "IndexPage")
-	//homeTemplate.Execute(w, "ws://"+r.Host+"/echo")
+func wsEndpoint(w http.ResponseWriter, r *http.Request) {
+	//Way (dirty and quick) acccept any sockets into endpoint regardless of origin
+	upgrader.CheckOrigin = func(r *http.Request) bool { return true }
+
+	ws, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		log.Print(err)
+	}
+	log.Println("Client Successfully Connected")
+	reader(ws)
+
+}
+
+func setupRoutes() {
+	http.HandleFunc("/", homePage)
+	http.HandleFunc("/ws", wsEndpoint)
 }
 
 func main() {
-	//flag.Parse()
-	log.SetFlags(0)
-	http.HandleFunc("/socket", echo)
-	http.HandleFunc("/", home)
-	log.Fatal(http.ListenAndServe(*addr, nil))
+	fmt.Println("Go Websockets")
+	setupRoutes()
+	log.Fatal(http.ListenAndServe((Domain + ":" + Port), nil))
 }
-
-var homeTemplate = template.Must(template.New("").Parse(`
-<!DOCTYPE html>
-<html>
-<body>
-	Hello World ! (tut tut!)
-</body>
-</html>
-`))

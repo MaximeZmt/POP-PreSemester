@@ -11,5 +11,6 @@
 
 - [Typescript websocket](https://ably.com/topic/websockets-typescript)
 - [Websocket Specs](https://websockets.spec.whatwg.org//)
-- To Be Completed
-
+- [Gorilla Explaination video](https://www.youtube.com/watch?v=dniVs0xKYKk&t=172s)
+- [Basics tutorial Gorilla](https://tutorialedge.net/golang/go-websocket-tutorial/)
+- to be completed

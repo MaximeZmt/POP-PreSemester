@@ -46,7 +46,7 @@ func reader(conn *websocket.Conn) {
 			}
 		}
 
-		if err = conn.WriteMessage(messageType, []byte(string(counter))); err != nil {
+		if err = conn.WriteMessage(messageType, []byte(strconv.Itoa(counter))); err != nil {
 			log.Println(err)
 			return
 		}

@@ -1,12 +1,12 @@
 # Presemester Work
 
-
+<span style="color:red;"><strong>WARNING:</strong> have to deal with scala server that currently doesn't accept number <0 => harmonize all servers/client </span>
 
 ### Todo
 
 - [x] Typescript/React Client
 - [x] Go server
-- [ ] Scala server
+- [x] Scala server: nearly done => some harmonization left to do
 - [ ] Java/Android Client
 - [ ] Complete and clean git repo
 - [ ] Clean code

@@ -24,6 +24,10 @@
 - [Websocket Specs](https://websockets.spec.whatwg.org//)
 - [Creation of a react app in typescript](https://create-react-app.dev/docs/getting-started)
 
+#### Scala (Server)
+
+- [Akka websocket example](https://github.com/amdelamar/akka-websockets-demo)
+
 #### - Other Useful stuff
 
 - [Chrome Extension: a simple websocket client](https://chrome.google.com/webstore/detail/simple-websocket-client/pfdhoblngboilpfeibdedpjgfnlcodoo)

@@ -1,6 +1,6 @@
 # Presemester Work
 
-<span style="color:red;"><strong>WARNING:</strong> have to deal with scala server that currently doesn't accept number <0 => harmonize all servers/client </span>
+<strong>WARNING:</strong> have to deal with scala server that currently doesn't accept number <0 => harmonize all servers/client
 
 ### Todo
 
@@ -12,6 +12,10 @@
 - [ ] Clean code
 
 ### Sources:
+
+#### - DEDIS
+
+- [Github Repo of the project](https://github.com/dedis/popstellar)
 
 #### - Go (server)
 
@@ -27,6 +31,14 @@
 #### Scala (Server)
 
 - [Akka websocket example](https://github.com/amdelamar/akka-websockets-demo)
+
+#### Android (Client)
+
+- [Scarlet gitub](https://github.com/Tinder/Scarlet)
+- [Helpful github issues for Scarlet java](https://github.com/Tinder/Scarlet/issues/12)
+- [Scarlet tutorial video](https://www.youtube.com/watch?v=mcVGDtRNRUc)
+- [Android cleartext traffic](https://stackoverflow.com/questions/45940861/android-8-cleartext-http-traffic-not-permitted)
+- [Android access localhost from emulator](https://inspirnathan.com/posts/34-access-localhost-inside-android-emulator/)
 
 #### - Other Useful stuff
 

@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">websocket-client</string>
+    <string name="status_default">status: disconnected</string>
+    <string name="button_connect">Connect</string>
+    <string name="button_send">Send</string>
+    <string name="field_address">Address</string>
+    <string name="field_message">Enter a message</string>
 </resources>

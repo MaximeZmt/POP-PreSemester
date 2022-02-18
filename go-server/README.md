@@ -1,4 +1,4 @@
-﻿﻿# Go-Server
+# Go-Server
 
 Welcome to the Golang Server directory of my small WebSocket program !
 

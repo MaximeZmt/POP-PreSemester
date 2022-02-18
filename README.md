@@ -1,17 +1,97 @@
 # Presemester Work
 
-<strong>WARNING:</strong> have to deal with scala server that currently doesn't accept number <0 => harmonize all servers/client
+Welcome on this repository. Here, you will find a simple implementation of WebSocket communication following the N-version programming.
 
-### Todo
+There is two WebSocket server (Golang and Scala) and two WebSocket client (Typescript/React and Android/Java).
+
+It follows the Assignment given by the [DEDIS](https://dedis.epfl.ch/) laboratory at EPFL given in the context of the [Proof Of Personhood semester project](https://github.com/dedis/popstellar).
+
+
+
+## Table of Contents
+
+1. [Specifications](#Specs)
+2. [Implementations](#Implem)
+   - [Android Client (Java)](./android-client)
+   - [React Client (Typescript)](./react-client)
+   - [Golang Server](./go-server)
+   - [Scala Server](./scala-server)
+3. [Project Development Status](#Status)
+   - [TODO](#TODO)
+   - [Helpful Sources for dev/Documentations](#Res)
+
+
+
+## Specifications <a name="Specs"></a>
+
+My implementation follows the following specification:
+
+ <img src="C:\Users\Maxime\Desktop\presemesterRepo\img\schema-communication.png" width=500px>
+
+*The Schema comes from the [Assignment Sheet](Assignment.pdf)*
+
+When a connection is established between the server and the client. The server will initialize a counter to 0.
+
+Then the client can send an integer to the server which will add it to the counter and send back the result.
+
+The Following behaviour is implemented:
+
+---
+
+[CONNECTION (1) ]
+
+(client) => 5
+
+5 <= (server) 
+
+(client) => -7
+
+-2 <= (server) 
+
+(client) => "hello"
+
+"NotANumber" <= (server) 
+
+(client) => 3
+
+1 <= (server)
+
+----
+
+Once the connection is closed, the counter is destroyed and it is impossible for the client to resume the previous connection.
+
+
+
+## Implementations <a name="Implem"></a>
+
+*Click below to have more details on a given implementations*
+
+- #### [Android Client (Java)](./android-client)
+
+- #### [React Client (Typescript)](react-client)
+
+- #### [Golang Server](./go-server)
+
+- #### [Scala Server](./scala-server)
+
+
+
+## Project Development Status <a name="Status"></a>
+
+### TODO <a name="TODO"></a>
 
 - [x] Typescript/React Client
 - [x] Go server
 - [x] Scala server: nearly done => some harmonization left to do
-- [ ] Java/Android Client
+- [x] Java/Android Client
+- [ ] Harmonize code to specs
+- [ ] Add comments to the code
 - [ ] Complete and clean git repo
-- [ ] Clean code
+- [ ] Clean/Refactor code
 
-### Sources:
+<strong>WARNING:</strong> have to deal with scala server that currently doesn't accept number <0 => harmonize all servers/client
+
+### Helpful Sources for dev/Documentations <a name="Res"></a>
 
 #### - DEDIS
 
@@ -39,6 +119,7 @@
 - [Scarlet tutorial video](https://www.youtube.com/watch?v=mcVGDtRNRUc)
 - [Android cleartext traffic](https://stackoverflow.com/questions/45940861/android-8-cleartext-http-traffic-not-permitted)
 - [Android access localhost from emulator](https://inspirnathan.com/posts/34-access-localhost-inside-android-emulator/)
+- [Android Error RunOnUiThread](https://developer.android.com/reference/android/app/Activity#runOnUiThread(java.lang.Runnable))
 
 #### - Other Useful stuff
 

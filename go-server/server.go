@@ -8,26 +8,30 @@ import (
 	"strconv"
 )
 
+// CHANGE THE CONST HERE TO MODIFY THE DOMAIN AND/OR THE PORT
 const Domain = "localhost"
 const Port = "8080"
 
-//var addr = flag.String("addr", (Domain + ":" + Port), "http service address")
-
+// Initialize the Upgrader with the buffer for WebSocket communication
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
 }
 
 func homePage(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello World Home Page !")
+	fmt.Fprintf(w, "Non Socket Connection")
 }
 
+/*
+  Function That is instantiated for each client
+*/
 func reader(conn *websocket.Conn) {
-	var counter = 0
+	var counter = 0 // init the counter at 0
 	for {
 		messageType, p, err := conn.ReadMessage()
 
 		if err != nil {
+			// If there is an error while reading the message
 			log.Println(err)
 			return
 		}
@@ -40,13 +44,13 @@ func reader(conn *websocket.Conn) {
 
 		if err != nil {
 			log.Println(err)
-			if err = conn.WriteMessage(messageType, []byte("Not A Number")); err != nil {
+			log.Println("NotANumber")
+			// If error while converting message received from string to int, then reply NotANumber
+			if err = conn.WriteMessage(messageType, []byte("NotANumber")); err != nil {
 				log.Println(err)
 				return
 			}
-		}
-
-		if err = conn.WriteMessage(messageType, []byte(strconv.Itoa(counter))); err != nil {
+		} else if err = conn.WriteMessage(messageType, []byte(strconv.Itoa(counter))); err != nil {
 			log.Println(err)
 			return
 		}
@@ -62,18 +66,20 @@ func wsEndpoint(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Print(err)
 	}
+
+	// New Client connected
 	log.Println("Client Successfully Connected")
 	reader(ws)
-
 }
 
 func setupRoutes() {
-	http.HandleFunc("/", homePage)
-	http.HandleFunc("/ws", wsEndpoint)
+	http.HandleFunc("/", homePage)     // Non WebSocket
+	http.HandleFunc("/ws", wsEndpoint) // Websocket
 }
 
 func main() {
-	fmt.Println("Go Websockets")
+	fmt.Println("Golang Websockets Server")
+	fmt.Println("Connection at: ws://" + (Domain + ":" + Port) + "/ws")
 	setupRoutes()
 	log.Fatal(http.ListenAndServe((Domain + ":" + Port), nil))
 }

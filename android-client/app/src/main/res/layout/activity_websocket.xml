@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".websocket">
+    tools:context=".Websocket">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,6 +36,16 @@
                 android:layout_weight="1"
                 android:text="@string/button_send" />
         </LinearLayout>
+
+        <Button
+            android:id="@+id/button_disconnect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Disconnect" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="34dp" />
 
         <ScrollView
             android:layout_width="match_parent"

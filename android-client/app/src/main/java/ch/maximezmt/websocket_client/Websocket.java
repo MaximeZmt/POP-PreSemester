@@ -20,15 +20,17 @@ import com.tinder.scarlet.messageadapter.gson.GsonMessageAdapter;
 import com.tinder.scarlet.streamadapter.rxjava2.RxJava2StreamAdapterFactory;
 import com.tinder.scarlet.websocket.okhttp.OkHttpClientUtils;
 
+
 import io.reactivex.functions.Consumer;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
-public class websocket extends AppCompatActivity {
+public class Websocket extends AppCompatActivity {
 
     // 10.0.2.2 is the localhost for Android AVD (which is default android studio emulator)
 
     private Button buttonSend;
+    private Button buttonDisconnect;
 
     private CommunicationService comServ;
 
@@ -40,11 +42,14 @@ public class websocket extends AppCompatActivity {
 
     private TextView convTV;
 
+    public static String content = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_websocket);
-
+        content = "";
+        //io.reactivex.exceptions.OnErrorNotImplementedException: Only the original thread that created a view hierarchy can touch its views.
         Intent intent = getIntent();
         String address = intent.getStringExtra("address");
         address = address.replace("ws://", "http://");
@@ -56,10 +61,12 @@ public class websocket extends AppCompatActivity {
 
 
         app = this.getApplication();
-        wsIntent = new Intent(getApplicationContext(), websocket.class);
+        wsIntent = new Intent(getApplicationContext(), Websocket.class);
 
         //get button and input from view
         buttonSend = findViewById(R.id.button_send);
+        buttonDisconnect = findViewById(R.id.button_disconnect);
+
         convTV = findViewById(R.id.textView);
         inputMessage = findViewById(R.id.message_input);
 
@@ -68,6 +75,7 @@ public class websocket extends AppCompatActivity {
             finish();
             return;
         }
+
 
         comServ.observeEvent().subscribe(new Consumer<WebSocket.Event>(){
             @Override
@@ -80,21 +88,27 @@ public class websocket extends AppCompatActivity {
                 }else if(event.getClass().equals(WebSocket.Event.OnMessageReceived.class)){
                     Message.Text m = (Message.Text)((WebSocket.Event.OnMessageReceived) event).getMessage();
                     Log.d(getString(R.string.log_tag), "message-> "+m.getValue());
-                    String current = convTV.getText().toString();
-                    current = current + "\n" + m.getValue() + " <=(Serv)";
-                    convTV.setText(current);
+                    //String current = convTV.getText().toString();
+                    Websocket.content +=  "\n" + m.getValue() + " <=(Serv)";
+                    runOnUiThread(()->updateContent());
                 }
             }
         });
 
 
+        buttonDisconnect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                return;
+            }
+        });
 
         buttonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String current = convTV.getText().toString();
-                current = current + "\n (Client)=>"+inputMessage.getText().toString();
-                convTV.setText(current);
+                Websocket.content += "\n (Client)=>"+inputMessage.getText().toString();
+                convTV.setText(Websocket.content);
                 comServ.sendMessage(Integer.parseInt(inputMessage.getText().toString()));
             }
         });
@@ -113,5 +127,10 @@ public class websocket extends AppCompatActivity {
             .lifecycle(AndroidLifecycle.ofApplicationForeground(app))
             .build().create(CommunicationService.class);
     }
+
+    private void updateContent(){
+        convTV.setText(content);
+    }
+
 
 }

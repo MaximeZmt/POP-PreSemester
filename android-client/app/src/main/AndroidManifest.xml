@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Websocketclient"
         android:usesCleartextTraffic="true">
-        <activity android:name=".websocket"></activity>
+        <activity android:name=".Websocket"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

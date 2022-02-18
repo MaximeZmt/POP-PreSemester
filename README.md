@@ -26,7 +26,7 @@ It follows the Assignment given by the [DEDIS](https://dedis.epfl.ch/) laborator
 
 My implementation follows the following specification:
 
- <img src="C:\Users\Maxime\Desktop\presemesterRepo\img\schema-communication.png" width=500px>
+ <img src="./img/schema-communication.png" width=500px>
 
 *The Schema comes from the [Assignment Sheet](Assignment.pdf)*
 

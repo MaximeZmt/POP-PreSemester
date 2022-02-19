@@ -44,6 +44,9 @@ object WSServer {
   def connection(): Flow[Message, Message, Any] = {
     //counter for each client
     var counter: Int = 0
+    val regexpInteger = """[-+]?\d+""".r
+    
+    println("Client Successfully Connected")
 
     val (actorRef: ActorRef, publisher: Publisher[TextMessage.Strict]) =
       Source.actorRef[String](16, OverflowStrategy.fail)
@@ -55,11 +58,15 @@ object WSServer {
       .map {
         case TextMessage.Strict(msg) =>
           // Message from client
-          if (msg.forall(Character.isDigit)){
+          println(msg)
+          try{
             counter = counter + msg.toInt
             actorRef ! counter.toString
-          }else{
-            actorRef ! "Not a Number"
+          }catch{
+            case _ =>{
+              actorRef ! "NotANumber"
+              println("NotANumber")
+            }
           }
       }
       .to(Sink.onComplete(x => x))

@@ -1,8 +1,23 @@
-## sbt project compiled with Scala 3
+# Scala-Server
 
-### Usage
+Welcome to the Scala Server directory of my small WebSocket program !
 
-This is a normal sbt project. You can compile code with `sbt compile`, run it with `sbt run`, and `sbt console` will start a Scala 3 REPL.
 
-For more information on the sbt-dotty plugin, see the
-[scala3-example-project](https://github.com/scala/scala3-example-project/blob/main/README.md).
+
+To configure the Domain and the Port, change the following lines in `src/main/scala/main.scala`
+
+```scala
+  val address = "localhost" // Line 21
+  val port = 8080 // Line 22
+```
+
+To run the program, type:
+
+`sbt run`
+
+
+
+#### Information: 
+
+-  The server has been built as an SBT project with Scala3.
+-  It uses [Scarlet Library](https://github.com/Tinder/Scarlet) for WebSocket.

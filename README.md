@@ -56,6 +56,14 @@ The Following behaviour is implemented:
 
 1 <= (server)
 
+(client) => " "
+
+"NotANumber" <= (server) 
+
+(client) => ""
+
+"NotANumber" <= (server) 
+
 ----
 
 Once the connection is closed, the counter is destroyed and it is impossible for the client to resume the previous connection.

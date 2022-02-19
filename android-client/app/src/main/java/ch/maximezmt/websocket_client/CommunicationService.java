@@ -14,6 +14,9 @@ public interface CommunicationService {
     @Send
     void sendMessage(int num);
 
+    @Send
+    void sendMessage(String mess);
+
     @Receive
     Flowable<WebSocket.Event> observeEvent();
 

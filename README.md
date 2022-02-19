@@ -92,8 +92,8 @@ Once the connection is closed, the counter is destroyed and it is impossible for
 - [x] Go server
 - [x] Scala server: nearly done => some harmonization left to do
 - [x] Java/Android Client
-- [ ] Harmonize code to specs
-- [ ] Add comments to the code
+- [x] Harmonize code to specs
+- [x] Add comments to the code
 - [ ] Complete and clean git repo
 - [ ] Clean/Refactor code
 

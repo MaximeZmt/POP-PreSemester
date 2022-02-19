@@ -25,9 +25,11 @@ import io.reactivex.functions.Consumer;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
+/**
+ * Activity that handle the WebSocket communication
+ */
 public class Websocket extends AppCompatActivity {
 
-    // 10.0.2.2 is the localhost for Android AVD (which is default android studio emulator)
 
     private Button buttonSend;
     private Button buttonDisconnect;
@@ -48,10 +50,16 @@ public class Websocket extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_websocket);
+
+        // Variable that contains the WebSocket Discussion
         content = "";
-        //io.reactivex.exceptions.OnErrorNotImplementedException: Only the original thread that created a view hierarchy can touch its views.
+
+        // Recover the address given in previous activity form
         Intent intent = getIntent();
         String address = intent.getStringExtra("address");
+
+        // Write address in form http/https (even if for websocket it is common to use ws/wss)
+        // But this is more convenient to use the URLUtil.isValidUrl that will prevent crashing with bad input
         address = address.replace("ws://", "http://");
         address = address.replace("wss://", "https://");
         if(address == null || address == "" || !URLUtil.isValidUrl(address)){
@@ -63,7 +71,7 @@ public class Websocket extends AppCompatActivity {
         app = this.getApplication();
         wsIntent = new Intent(getApplicationContext(), Websocket.class);
 
-        //get button and input from view
+        // Get button and input from view
         buttonSend = findViewById(R.id.button_send);
         buttonDisconnect = findViewById(R.id.button_disconnect);
 
@@ -88,14 +96,16 @@ public class Websocket extends AppCompatActivity {
                 }else if(event.getClass().equals(WebSocket.Event.OnMessageReceived.class)){
                     Message.Text m = (Message.Text)((WebSocket.Event.OnMessageReceived) event).getMessage();
                     Log.d(getString(R.string.log_tag), "message-> "+m.getValue());
-                    //String current = convTV.getText().toString();
                     Websocket.content +=  "\n" + m.getValue() + " <=(Serv)";
+
+                    // Very usefull method to make the main thread update its view
                     runOnUiThread(()->updateContent());
                 }
             }
         });
 
 
+        // Disconnect button listener
         buttonDisconnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,17 +114,27 @@ public class Websocket extends AppCompatActivity {
             }
         });
 
+
+        // Send button Listener
         buttonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Websocket.content += "\n (Client)=>"+inputMessage.getText().toString();
                 convTV.setText(Websocket.content);
-                comServ.sendMessage(Integer.parseInt(inputMessage.getText().toString()));
+                try{
+                    int conv = Integer.parseInt(inputMessage.getText().toString());
+                    comServ.sendMessage(conv);
+                }catch (Exception e){
+                    comServ.sendMessage(inputMessage.getText().toString());
+                }
             }
         });
 
     }
 
+    /**
+     * WebSocket Communication Object Builder
+     */
     private static CommunicationService scarletBuilder(Application app, String address){
         OkHttpClient okClient = new OkHttpClient.Builder()
                 .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC))
@@ -128,6 +148,9 @@ public class Websocket extends AppCompatActivity {
             .build().create(CommunicationService.class);
     }
 
+    /**
+     * Update the view
+     */
     private void updateContent(){
         convTV.setText(content);
     }

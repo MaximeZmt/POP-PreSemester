@@ -5,28 +5,38 @@ import './App.css';
 
 var client: WebSocket;
 
-//    ws://localhost:8080/ws
+
 function connect(){
+
+  // Create the WebSocket element
   client = new WebSocket((document.getElementById("inputAddr") as HTMLInputElement).value);
+
   if (client != null) {
+    // Listener for onOpen connection event
     client.onopen = function (event) {
       (document.getElementById("exchange") as HTMLElement ).innerHTML = "";
       (document.getElementById("statusTxt") as HTMLElement ).innerHTML = "Connected";
       (document.getElementById("inputTxt") as HTMLInputElement).disabled = false;
       (document.getElementById("buttonNumb") as HTMLInputElement).disabled = false;
     }
+
+    // Listener for onError
     client.onerror = function (event) {
       (document.getElementById("statusTxt") as HTMLElement ).innerHTML = "Disconnected";
       (document.getElementById("inputTxt") as HTMLInputElement).disabled = true;
       (document.getElementById("buttonNumb") as HTMLInputElement).disabled = true;
       (document.getElementById("exchange") as HTMLElement ).innerHTML = "";
     }
+
+    // Listener for onClose
     client.onclose = function (event) {
       (document.getElementById("statusTxt") as HTMLElement ).innerHTML = "Disconnected";
       (document.getElementById("inputTxt") as HTMLInputElement).disabled = true;
       (document.getElementById("buttonNumb") as HTMLInputElement).disabled = true;
       (document.getElementById("exchange") as HTMLElement ).innerHTML = "";
     }
+
+    // Listener when recieve a Message
     client.onmessage = function (event) {
       console.log("Recieve: "+event.data);
       (document.getElementById("exchange") as HTMLElement ).innerHTML = (document.getElementById("exchange") as HTMLElement ).innerHTML + "<br>" +event.data +"<=(Serv)";
@@ -43,6 +53,7 @@ function send(){
   (document.getElementById("exchange") as HTMLElement ).innerHTML = (document.getElementById("exchange") as HTMLElement ).innerHTML + "<br>" + "(client)=>" + value
 }
 
+// Initially lock some field
 window.onload = function(){
   (document.getElementById("inputTxt") as HTMLInputElement).disabled = true;
   (document.getElementById("buttonNumb") as HTMLInputElement).disabled = true;

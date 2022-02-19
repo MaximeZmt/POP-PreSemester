@@ -18,21 +18,24 @@ object WSServer {
   implicit val executionContext: ExecutionContextExecutor =
     ExecutionContext.fromExecutor(Executors.newFixedThreadPool(16))
 
+  // CHANGE THE CONST HERE TO MODIFY THE DOMAIN AND/OR THE PORT
   val address = "localhost"
   val port = 8080
   
   def main(args: Array[String]): Unit = {
 
     val route: Route =
-      path("ws") {
+      path("ws") { // /ws are upgraded to WebSocket connection
         handleWebSocketMessages(connection())
       }
 
+    // Bind Address and port to create the server
     val bindingFut = Http().bindAndHandle(route, address, port)
     
     println("Server is running: "+address+":"+port.toString)
     println("Type anything into the prompt to end the program")
     
+    // Handle the end of server
     StdIn.readLine()
     bindingFut
       .flatMap(_.unbind())
@@ -44,7 +47,6 @@ object WSServer {
   def connection(): Flow[Message, Message, Any] = {
     //counter for each client
     var counter: Int = 0
-    val regexpInteger = """[-+]?\d+""".r
     
     println("Client Successfully Connected")
 
@@ -60,12 +62,14 @@ object WSServer {
           // Message from client
           println(msg)
           try{
+            // Try to parse it as a Integer
             counter = counter + msg.toInt
             actorRef ! counter.toString
           }catch{
+            // If fail, send an Error
             case _ =>{
               actorRef ! "NotANumber"
-              println("NotANumber")
+              println("Error: NotANumber")
             }
           }
       }

@@ -7,8 +7,8 @@ Welcome to the Scala Server directory of my small WebSocket program !
 To configure the Domain and the Port, change the following lines in `src/main/scala/main.scala`
 
 ```scala
-  val address = "localhost" // Line 21
-  val port = 8080 // Line 22
+  val address = "localhost" // Line 22
+  val port = 8080 // Line 23
 ```
 
 To run the program, type:

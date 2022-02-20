@@ -17,7 +17,7 @@ To Run the program, type:
 
 `go run ./server.go`
 
-Then to connect the address becomes:
+Then to connect the address is:
 
 `ws://Domain:Port/ws`
 

@@ -2,9 +2,9 @@
 
 Welcome on this repository. Here, you will find a simple implementation of WebSocket communication following the N-version programming.
 
-There is two WebSocket server (Golang and Scala) and two WebSocket client (Typescript/React and Android/Java).
+There are two WebSocket server (Golang and Scala) and two WebSocket clients (Typescript/React and Android/Java).
 
-It follows the Assignment given by the [DEDIS](https://dedis.epfl.ch/) laboratory at EPFL given in the context of the [Proof Of Personhood semester project](https://github.com/dedis/popstellar).
+It follows the Assignment given by the [DEDIS](https://dedis.epfl.ch/) laboratory at EPFL in the context of the [Proof Of Personhood semester project](https://github.com/dedis/popstellar).
 
 
 
@@ -24,13 +24,13 @@ It follows the Assignment given by the [DEDIS](https://dedis.epfl.ch/) laborator
 
 ## Specifications <a name="Specs"></a>
 
-My implementation follows the following specification:
+My implementation follows the below specifications:
 
  <img src="./img/schema-communication.png" width=500px>
 
 *The Schema comes from the [Assignment Sheet](Assignment.pdf)*
 
-When a connection is established between the server and the client. The server will initialize a counter to 0.
+When a connection is established between the server and the client, the server will initialize a counter to 0.
 
 Then the client can send an integer to the server which will add it to the counter and send back the result.
 

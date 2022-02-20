@@ -1,4 +1,7 @@
 import java.util.concurrent.Executors
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
 import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Directives._
@@ -10,6 +13,7 @@ import akka.stream.scaladsl.{Flow, Keep, Sink, Source}
 import akka.http.scaladsl.model.ws.{Message, TextMessage}
 import org.reactivestreams.Publisher
 import akka.actor.actorRef2Scala
+
 
 
 object WSServer {
@@ -32,8 +36,8 @@ object WSServer {
     // Bind Address and port to create the server
     val bindingFut = Http().bindAndHandle(route, address, port)
     
-    println("Server is running: "+address+":"+port.toString)
-    println("Type anything into the prompt to end the program")
+    printLog("Server is running: "+address+":"+port.toString)
+    printLog("Type anything into the prompt to end the program")
     
     // Handle the end of server
     StdIn.readLine()
@@ -48,7 +52,7 @@ object WSServer {
     //counter for each client
     var counter: Int = 0
     
-    println("Client Successfully Connected")
+    printLog("Client Successfully Connected")
 
     val (actorRef: ActorRef, publisher: Publisher[TextMessage.Strict]) =
       Source.actorRef[String](16, OverflowStrategy.fail)
@@ -60,16 +64,17 @@ object WSServer {
       .map {
         case TextMessage.Strict(msg) =>
           // Message from client
-          println(msg)
+          printLog("Recv: "+msg)
           try{
             // Try to parse it as a Integer
             counter = counter + msg.toInt
             actorRef ! counter.toString
+            printLog("Send: "+counter.toString)
           }catch{
             // If fail, send an Error
             case _ =>{
               actorRef ! "NotANumber"
-              println("Error: NotANumber")
+              printLog("Err: NotANumber")
             }
           }
       }
@@ -79,5 +84,8 @@ object WSServer {
     Flow.fromSinkAndSource(sink, Source.fromPublisher(publisher))
   }
 
+  def printLog(s: String): Unit = {
+    println(LocalDateTime.now.format(DateTimeFormatter.ofPattern("YYYY/MM/dd HH:mm:ss")).toString+ " " + s)
+  }
 
 }

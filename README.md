@@ -94,10 +94,10 @@ Once the connection is closed, the counter is destroyed and it is impossible for
 - [x] Java/Android Client
 - [x] Harmonize code to specs
 - [x] Add comments to the code
-- [ ] Complete and clean git repo
-- [ ] Clean/Refactor code
+- [x] Complete and clean git repo
+- [x] Clean code
 
-<strong>WARNING:</strong> have to deal with scala server that currently doesn't accept number <0 => harmonize all servers/client
+
 
 ### Helpful Sources for dev/Documentations <a name="Res"></a>
 

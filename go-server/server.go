@@ -36,23 +36,24 @@ func reader(conn *websocket.Conn) {
 			return
 		}
 
-		log.Println(string(p))
+		log.Println("Recv: ", string(p))
 
 		intVar, err := strconv.Atoi(string(p))
 		counter += intVar
-		log.Println(counter)
 
 		if err != nil {
-			log.Println(err)
-			log.Println("NotANumber")
+			log.Println("Err: ", err)
+			log.Println("Err: NotANumber")
 			// If error while converting message received from string to int, then reply NotANumber
 			if err = conn.WriteMessage(messageType, []byte("NotANumber")); err != nil {
-				log.Println(err)
+				log.Println("Err: ", err)
 				return
 			}
 		} else if err = conn.WriteMessage(messageType, []byte(strconv.Itoa(counter))); err != nil {
-			log.Println(err)
+			log.Println("Err: ", err)
 			return
+		} else {
+			log.Println("Send: ", counter)
 		}
 
 	}

@@ -15,7 +15,9 @@ To run the program, type:
 
 `sbt run`
 
+Then to connect the address becomes:
 
+`ws://address:Port/ws`
 
 #### Information: 
 
